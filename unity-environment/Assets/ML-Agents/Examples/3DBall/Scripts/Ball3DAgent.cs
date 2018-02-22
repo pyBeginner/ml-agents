@@ -36,11 +36,48 @@ public class Ball3DAgent : Agent
             {
                 gameObject.transform.Rotate(new Vector3(1, 0, 0), action_x);
             }
-            if (!done)
+        }
+        else
+        {
+            int action = Mathf.FloorToInt(act[0]);
+            float action_z = 0f;
+            float action_x = 0f;
+
+            if (action == 0)
             {
-                reward = 0.1f;
+                action_z = 1f;
+            }
+            if (action == 1)
+            {
+                action_z = -1f;
+            }
+
+            if (action == 2)
+            {
+                action_x = 1f;
+            }
+            if (action == 3)
+            {
+                action_x = -1f;
+            }
+
+            if ((gameObject.transform.rotation.z < 0.25f && action_z > 0f) ||
+                (gameObject.transform.rotation.z > -0.25f && action_z < 0f))
+            {
+                gameObject.transform.Rotate(new Vector3(0, 0, 1), action_z);
+            }
+            if ((gameObject.transform.rotation.x < 0.25f && action_x > 0f) ||
+                (gameObject.transform.rotation.x > -0.25f && action_x < 0f))
+            {
+                gameObject.transform.Rotate(new Vector3(1, 0, 0), action_x);
             }
         }
+
+        if (!done)
+        {
+            reward = 0.1f;
+        }
+
         if ((ball.transform.position.y - gameObject.transform.position.y) < -2f ||
             Mathf.Abs(ball.transform.position.x - gameObject.transform.position.x) > 3f ||
             Mathf.Abs(ball.transform.position.z - gameObject.transform.position.z) > 3f)
